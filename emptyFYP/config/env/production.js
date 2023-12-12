@@ -73,7 +73,7 @@ module.exports = {
       ****************************************************************************/
       // ssl: { rejectUnauthorized: true },
       adapter: require('sails-mysql'),
-      url: 'mysql://root:Psycho.K0831@127.0.0.1:3306/fyptesting',
+      url: 'mysql://root:Psycho.K0831@127.0.0.1:3306/FYPDeploy',
     },
 
   },
@@ -150,9 +150,9 @@ module.exports = {
     *                                                                          *
     ***************************************************************************/
     cors: {
-      // allowOrigins: [
-      //   'https://example.com',
-      // ]
+       allowOrigins: [
+         'https://fypdeploy.e9222068.hkbu.app/',
+       ]
     },
 
   },
@@ -238,7 +238,7 @@ module.exports = {
     *                                                                          *
     ***************************************************************************/
     cookie: {
-      // secure: true,
+       secure: true,
       maxAge: 24 * 60 * 60 * 1000,  // 24 hours
     },
 
@@ -268,7 +268,7 @@ module.exports = {
     *                                                                          *
     ***************************************************************************/
      onlyAllowOrigins: [
-       'https://hkbu19222068fyp.onrender.com/',
+       'https://fypdeploy.e9222068.hkbu.app/',
        //'https://staging.example.com',
      ],
 
@@ -391,8 +391,8 @@ module.exports = {
   *                                                                         *
   ***************************************************************************/
   custom: {
-    baseUrl: 'https://example.com',
-    internalEmailAddress: 'support@example.com',
+    baseUrl: 'https://fypdeploy.e9222068.hkbu.app/',
+    //internalEmailAddress: 'support@example.com',
 
     // sendgridSecret: 'SG.fake.3e0Bn0qSQVnwb1E4qNPz9JZP5vLZYqjh7sn8S93oSHU',
     // stripeSecret: 'sk_prod__fake_Nfgh82401348jaDa3lkZ0d9Hm',
