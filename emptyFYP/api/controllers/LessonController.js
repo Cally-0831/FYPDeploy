@@ -1,5 +1,4 @@
 
-
 module.exports = {
     uploadlesson: async function (req, res) {
         var db = await sails.helpers.database();

@@ -4,7 +4,7 @@ var db = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "Psycho.K0831",
-    database: "fyptesting"
+    database: "FYPDeploy"
 });
 db.connect(async (err) => {
     if (err) {

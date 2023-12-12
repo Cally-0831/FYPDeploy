@@ -4,7 +4,7 @@ const pool = createPool({
     host:"localhost",
     user: "root",
     password: "Psycho.K0831",
-    database: "fyptesting",
+    database: "FYPDeploy",
     connectionLimit:10
 })
 
