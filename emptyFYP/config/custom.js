@@ -19,7 +19,7 @@ module.exports.custom = {
   // stripeSecret: 'sk_test_Zzd814nldl91104qor5911gjald',
   // …
  
-    URL : "sftp://e9222068:7BfRebBP@faith.comp.hkbu.edu.hk:22",
-    DEFAULT_FOLDER:"../u/cs20/e9222068/FYP"
+   // URL : "sftp://e9222068:7BfRebBP@faith.comp.hkbu.edu.hk:22",
+   // DEFAULT_FOLDER:"../u/cs20/e9222068/FYP"
  
 };

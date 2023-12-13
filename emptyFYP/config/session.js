@@ -18,7 +18,7 @@ module.exports.session = {
   * of your users, forcing them to log in again.                             *
   *                                                                          *
   ***************************************************************************/
-  secret: 'c38a35bec1f73400906ae0f61338b17e',
+  //secret: 'c38a35bec1f73400906ae0f61338b17e',
 
 
   /***************************************************************************
@@ -32,8 +32,8 @@ module.exports.session = {
   * https://sailsjs.com/config/session                                       *
   *                                                                          *
   ***************************************************************************/
-  // isSessionDisabled: function (req){
-  //   return !!req.path.match(req._sails.LOOKS_LIKE_ASSET_RX);
-  // },
+   isSessionDisabled: function (req){
+     return !!req.path.match(req._sails.LOOKS_LIKE_ASSET_RX);
+   },
 
 };

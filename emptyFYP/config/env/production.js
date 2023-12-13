@@ -103,7 +103,7 @@ module.exports = {
     * choose to keep this enabled.)                                            *
     *                                                                          *
     ***************************************************************************/
-    // cascadeOnDestroy: false,
+     cascadeOnDestroy: false,
 
   },
 
@@ -151,7 +151,7 @@ module.exports = {
     ***************************************************************************/
     cors: {
        allowOrigins: [
-         'https://fypdeploy.e9222068.hkbu.app/',
+          //'https://fypdeploy.e9222068.hkbu.app/',
        ]
     },
 
@@ -214,7 +214,7 @@ module.exports = {
     * https://sailsjs.com/config/session#?the-session-id-cookie                *
     *                                                                          *
     ***************************************************************************/
-    // name: '__Host-sails.sid',
+     //name: '__Host-sails.sid',
 
     /***************************************************************************
     *                                                                          *
@@ -268,8 +268,8 @@ module.exports = {
     *                                                                          *
     ***************************************************************************/
      onlyAllowOrigins: [
-       'https://fypdeploy.e9222068.hkbu.app/',
-       //'https://staging.example.com',
+       'http://localhost:1338',
+       'https://fypdeploye9222068.cyclic.app',
      ],
 
 
@@ -391,7 +391,7 @@ module.exports = {
   *                                                                         *
   ***************************************************************************/
   custom: {
-    baseUrl: 'https://fypdeploy.e9222068.hkbu.app/',
+    baseUrl: 'https://fypdeploye9222068.cyclic.app',
     //internalEmailAddress: 'support@example.com',
 
     // sendgridSecret: 'SG.fake.3e0Bn0qSQVnwb1E4qNPz9JZP5vLZYqjh7sn8S93oSHU',
