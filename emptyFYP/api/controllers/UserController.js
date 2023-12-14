@@ -6,6 +6,7 @@ module.exports = {
     login: async function (req, res) {
         var db = await sails.helpers.database();
         var pool = await sails.helpers.database2();
+        
         const user = {
             allusersname: "",
             pid: "",

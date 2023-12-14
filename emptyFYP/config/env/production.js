@@ -20,6 +20,8 @@
  */
 
 module.exports = {
+  port:3030,
+
 
 
   /**************************************************************************
@@ -47,7 +49,8 @@ module.exports = {
     *                                                                          *
     ***************************************************************************/
     default: {
-      
+      port : 3030,
+
       // adapter: 'sails-mysql',
       // url: 'mysql://user:password@host:port/database',
       //--------------------------------------------------------------------------
@@ -73,7 +76,8 @@ module.exports = {
       ****************************************************************************/
       // ssl: { rejectUnauthorized: true },
       adapter: require('sails-mysql'),
-      url: 'mysql://root:Psycho.K0831@127.0.0.1:3306/FYPDeploy',
+      url: 'mysql://root:Psycho.K0831@fypdeploy-mysql:3306/fypdeploy',
+      //url: 'mysql://root:Psycho.K0831@localhost:3306/fypdeploy',
     },
 
   },
@@ -103,7 +107,7 @@ module.exports = {
     * choose to keep this enabled.)                                            *
     *                                                                          *
     ***************************************************************************/
-     cascadeOnDestroy: false,
+    // cascadeOnDestroy: false,
 
   },
 
@@ -151,7 +155,7 @@ module.exports = {
     ***************************************************************************/
     cors: {
        allowOrigins: [
-          //'https://fypdeploy.e9222068.hkbu.app/',
+         'https://fyp.e9222068.hkbu.app',
        ]
     },
 
@@ -214,7 +218,7 @@ module.exports = {
     * https://sailsjs.com/config/session#?the-session-id-cookie                *
     *                                                                          *
     ***************************************************************************/
-     //name: '__Host-sails.sid',
+    // name: '__Host-sails.sid',
 
     /***************************************************************************
     *                                                                          *
@@ -238,7 +242,7 @@ module.exports = {
     *                                                                          *
     ***************************************************************************/
     cookie: {
-       secure: true,
+      secure: true,
       maxAge: 24 * 60 * 60 * 1000,  // 24 hours
     },
 
@@ -267,11 +271,13 @@ module.exports = {
     * > Be sure to use the right protocol!  ("http://" vs. "https://")         *
     *                                                                          *
     ***************************************************************************/
-     onlyAllowOrigins: [
-       'http://localhost:1338',
-       'https://fypdeploye9222068.cyclic.app',
-     ],
-
+     //onlyAllowOrigins: [
+       //'https://hkbu19222068fyp.onrender.com/',
+       //'https://staging.example.com',
+     //],
+     
+      onlyAllowOrigins: ["http://fyp.e9222068.hkbu.app", "https://fyp.e9222068.hkbu.app"]
+    
 
     /***************************************************************************
     *                                                                          *
@@ -391,8 +397,8 @@ module.exports = {
   *                                                                         *
   ***************************************************************************/
   custom: {
-    baseUrl: 'https://fypdeploye9222068.cyclic.app',
-    //internalEmailAddress: 'support@example.com',
+    baseUrl: 'https://fyp.e9222068.hkbu.app',
+    internalEmailAddress: 'support@example.com',
 
     // sendgridSecret: 'SG.fake.3e0Bn0qSQVnwb1E4qNPz9JZP5vLZYqjh7sn8S93oSHU',
     // stripeSecret: 'sk_prod__fake_Nfgh82401348jaDa3lkZ0d9Hm',

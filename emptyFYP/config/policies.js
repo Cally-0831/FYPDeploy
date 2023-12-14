@@ -16,8 +16,8 @@ module.exports.policies = {
 
   UserController: {
     login: true,
-    uploadstudentlist: "isSuper",
-    uploadsupervisorlist:"isAdmin",
+  //  uploadstudentlist: "isSuper",
+  //  uploadsupervisorlist:"isAdmin",
   },
   TimetableController: {
     "*":"isLoggedin",
@@ -44,11 +44,11 @@ module.exports.policies = {
     '*': "isAdmin"
   },
   ScheduleController:{
-    viewfinalschdule :"isLUser"
+    //viewfinalschdule :"isLUser"
   },
 
   LessonListController:{
-    '*': "isAdmin"
+   // '*': "isAdmin"
   }
 
   
