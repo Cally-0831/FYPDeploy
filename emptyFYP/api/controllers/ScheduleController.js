@@ -364,7 +364,7 @@ module.exports = {
             errmsg = "error happened in ScheduleController.genavailble.getsetting3"
         })
         //console.log(errmsg)
-        //console.log(setting3)
+        console.log(setting3)
 
 
 
@@ -741,7 +741,7 @@ module.exports = {
 
 
                     if (currentgeneratedate.toLocaleTimeString("en-GB") == "17:30:00") {
-                        console.log(currentgeneratedate.getDay())
+                        //console.log(currentgeneratedate.getDay())
                         if (currentgeneratedate.getDay() != 6) {
                             currentgeneratedate.setTime(currentgeneratedate.getTime() + 24 * 60 * 60 * 1000);
                             currentgeneratedate = new Date(currentgeneratedate);
@@ -987,7 +987,7 @@ module.exports = {
             // console.log(supervisorlist[a].tid, "   ", thisschedulebox)
 
             var getallstudentlistforthissuper = "(select tid, supervisorpairstudent.sid, oid as colleague from supervisorpairstudent left join observerpairstudent on observerpairstudent.sid = supervisorpairstudent.sid where supervisorpairstudent.tid = \"" + supervisorlist[a].tid + "\"and supervisorpairstudent.sid not in (select sid from allschedulebox) )union (select oid,observerpairstudent.sid , tid as colleague from observerpairstudent left join supervisorpairstudent on observerpairstudent.sid = supervisorpairstudent.sid where observerpairstudent.oid = \"" + supervisorlist[a].tid + "\" and observerpairstudent.sid not in (select sid from allschedulebox))";
-            console.log(getallstudentlistforthissuper)
+           // console.log(getallstudentlistforthissuper)
             var studentlistforthissupervisor = await new Promise((resolve) => {
                 pool.query(getallstudentlistforthissuper, (err, res) => {
                     var string = JSON.stringify(res);
@@ -1030,12 +1030,13 @@ module.exports = {
                 counttimeboxlist.sort((a, b) => {
                     return a.availblelist - b.availblelist;
                 })
-                console.log(counttimeboxlist)
-
+                //console.log(counttimeboxlist)
+                
 
                 for (var b = 0; b < counttimeboxlist.length; b++) {
                     console.log(counttimeboxlist[b])
                     var added = false;
+                    var index = 0;
 
                     for (var c = 0; c < thisschedulebox.length; c++) {
                         // console.log(thisschedulebox[c])
@@ -1053,7 +1054,6 @@ module.exports = {
 
                         if (thisschedulebox[c].schedule.length != checker || (checker == "0")) {
                             while (!added) {
-
                                 function appendquery(thisschedulebox) {
                                     var checkavailabledup = "select supervisorpairstudent.tid , supervisorpairstudent.sid , observerpairstudent.oid, studentavailable.availabledate, studentavailable.availablestartTime, studentavailable.availableendTime from supervisorpairstudent "
                                         + "left join observerpairstudent on supervisorpairstudent.sid = observerpairstudent.sid "
@@ -1085,9 +1085,14 @@ module.exports = {
                                     errmsg = "error happened in ScheduleController.genavailble.checkavailabledup"
                                 })
 
-                                console.log(">>checkscheduleboxlist", checkscheduleboxlist[0])
+                                //console.log(">>checkscheduleboxlist", checkscheduleboxlist[0])
                                 if (checkscheduleboxlist[0] == undefined) {
-                                    console.log(supervisorlist[a].tid, "  ", checkavailabledup)
+                                    //console.log(supervisorlist[a].tid, "  ", checkavailabledup)
+                                    index ++;
+
+                                    
+
+                                    
                                     console.log("this fail", counttimeboxlist[b].sid)
 
                                     var manualhandleline = "insert into manualhandlecase values(\"" + counttimeboxlist[b].sid + "\",\"" + counttimeboxlist[b].tid + "\",\"" + counttimeboxlist[b].oid + "\")"
@@ -1104,7 +1109,7 @@ module.exports = {
                                     thisschedulebox[c].schedule.push(checkscheduleboxlist[0])
                                     //console.log(">>see see ", thisschedulebox[c].schedule)
                                     added = true;
-                                    console.log("this pass", counttimeboxlist[b].sid)
+                                    //console.log("this pass", counttimeboxlist[b].sid)
                                 }
 
                             }
@@ -1116,11 +1121,25 @@ module.exports = {
                             }
 
                         }
-                        if (added) { checker++; break; } else {
+                        if (added) { 
+                            checker++; 
+                            var deletemanualhandleline = "delete from manualhandlecase where sid = \"" + counttimeboxlist[b].sid + "\";";
+
+                            db.query(deletemanualhandleline, (err, res) => {
+                                try { console.log("deleteed manual handlecase") } catch (err) {
+                                    console.log("error happened in inserting ScheduleController.genavailble.deletemanualhandleline")
+                                }
+                            })
+                            break;
+                         } else {
                             console.log("need to handle this ppl manually", counttimeboxlist[b].sid);
                         }
                     }
                 }
+
+
+
+
 
                 for (var c = 0; c < thisschedulebox.length; c++) {
                     for (var e = 0; e < thisschedulebox[c].schedule.length; e++) {
@@ -1134,7 +1153,7 @@ module.exports = {
                         //console.log(delavailabletimequery)
                         db.query(delavailabletimequery, (err, result) => {
                             try {
-                                console.log("delavailabletimequery complete")
+                             //   console.log("delavailabletimequery complete")
                             } catch (err) {
                                 if (err) {
                                     errmsg = "error happened in ScheduleController.delavailabletimequery"
@@ -1220,7 +1239,7 @@ module.exports = {
                         var insertscheduleboxquery = "insert into allschedulebox values(\"" + boxid + "\",\"" + timestamp.getFullYear() + "-" + (timestamp.getMonth() + 1) + "-" + timestamp.getDate() + " " + timestamp.toLocaleTimeString("en-GB") + "\",\"" + req.body.typeofpresent + "\","
                             + "\"" + thisschedulebox[c].schedule[e].tid + "\",\"" + thisschedulebox[c].schedule[e].sid + "\",\"" + thisschedulebox[c].schedule[e].oid + "\","
                             + "\"" + campus + "\",\"" + room + "\", now()) ;"
-                        console.log(insertscheduleboxquery)
+                        //console.log(insertscheduleboxquery)
 
                         var insertbox = await new Promise((resolve) => {
                             pool.query(insertscheduleboxquery, (err, res) => {
@@ -1229,7 +1248,7 @@ module.exports = {
                         }).catch((err) => {
                             errmsg = "error happened in ScheduleController.genavailble.insertscheduleboxquery"
                         })
-
+/** 
                         var updatesupervisordraft = "update supervisor set draft = \"Y\" where tid = \"" + thisschedulebox[c].schedule[e].tid + "\""
                         //console.log(updatesupervisordraft)
                         insertbox = await new Promise((resolve) => {
@@ -1239,7 +1258,7 @@ module.exports = {
                         }).catch((err) => {
                             errmsg = "error happened in ScheduleController.genavailble.updatesupervisordraft"
                         })
-
+*/
                     }
 
                 }
