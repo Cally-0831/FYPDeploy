@@ -8,7 +8,10 @@ const pool = createPool({
      password: "Psycho.K0831",
      //database: "fypdeploy"
      database: "fyptesting",
-    connectionLimit:10
+    connectionLimit:10,
+    idleTimeout: 100000, // idle connections timeout, in milliseconds, the default value 60000
+    queueLimit: 0,
+    enableKeepAlive: true,
 })
 
 

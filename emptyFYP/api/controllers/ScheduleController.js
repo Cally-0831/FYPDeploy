@@ -1630,7 +1630,7 @@ module.exports = {
                 //console.log('>> string: ', string );
                 var json = JSON.parse(string);
                 var havedraft = json;
-                //console.log('>> havedraft: ', havedraft);
+                console.log('>> havedraft: ', havedraft.length);
                 if (havedraft.length > 0) {
                     return res.status(200).json("redirect");
                 } else {

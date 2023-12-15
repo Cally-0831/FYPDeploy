@@ -3,6 +3,7 @@
 
 module.exports = {
 
+
     login: async function (req, res) {
         var db = await sails.helpers.database();
         var pool = await sails.helpers.database2();
@@ -25,7 +26,7 @@ module.exports = {
 
         //  console.log(searchingname + "  " + searchingpw);
 
-        let thisistheline = "SELECT * FROM allusers where pid = \'" + searchingname + "\'";
+        let thisistheline = "SELECT * FROM allusers where pid = \'" + searchingname + "\';";
           console.log(thisistheline);
 
         // Start a new session for the new login user

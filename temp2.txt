@@ -1,97 +1,46 @@
+/**
+ * Seed Function
+ * (sails.config.bootstrap)
+ *
+ * A function that runs just before your Sails app gets lifted.
+ * > Need more flexibility?  You can also create a hook.
+ *
+ * For more information on seeding your app with fake data, check out:
+ * https://sailsjs.com/config/bootstrap
+ */
+
+var fs = require('fs');
+module.exports.bootstrap = async function () {
+
+  // By convention, this is a good place to set up fake data during development.
+  //
+  // For example:
+  // ```
+  // // Set up fake development data (or if we already have some, avast)
+  if (await User.count() > 0) {
+    var db = await sails.helpers.database();
+  var pool = await sails.helpers.database2();
+  var dropcommand = '/Users/socally/AllFYP/FYPDeploy/SQL/Standard/dropcommand.sql';
+  var TableCreate = '/Users/socally/AllFYP/FYPDeploy/SQL/Standard/TableCreate.sql';
+  var SampleData = '/Users/socally/AllFYP/FYPDeploy/SQL/Standard/SampleData.sql';
+  var Setting = '/Users/socally/AllFYP/FYPDeploy/SQL/Standard/Setting.sql';
+  var AllclassSQL = '/Users/socally/AllFYP/FYPDeploy/SQL/Standard/AllclassSQL.sql';
+  //
+ var dropcommand = new File(dropcommand);
+ console.log(dropcommand);
+    return;
+  }
   
+  await User.createEach([
+    //  { emailAddress: 'ry@example.com', fullName: 'Ryan Dahl', },
+    //  { emailAddress: 'rachael@example.com', fullName: 'Rachael Shaw', },
 
-  
+    //   // etc.
+    
+    
+    
 
+  ]);
+  // ```
 
-            <%for(var a = 0 ; a < 13;a++){%>
-                <tr>
-                    <%for(var b = 0 ; b < 8;b++){%>
-                        <%var printed = false;%>
-                       <%if(b==0){%>
-                            <td><%=printday.toLocaleTimeString("en-GB")%></td>
-                        <%}else{%>
-                            <%if(b > displaydate.getDay()){%>
-                                <!--check schedule box--> 
-                                   
-                                <%if(boxes.length > 0 && printday.toLocaleDateString() == (new Date(boxes[0].boxdate)).toLocaleDateString()){%>
-                                   <%if(printday.toLocaleTimeString() == (new Date(boxes[0].boxdate)).toLocaleTimeString()){%>
-                                        <%printed = true;%>
-                                            <td style="font-size : 14px">
-                                                <table class="table is-narrow" style="margin-left: auto; margin-right: auto;">
-                                                    <tr><th style="text-align: center;vertical-align:middle; background-color: bisque;">boxid:</th></tr>
-                                                    <tr><td><%=boxes[0].boxID%></td></tr>
-                                                    <tr><th style="text-align: center;vertical-align:middle; background-color: bisque;">SID:</th></tr>
-                                                    <tr><td><%=boxes[0].SID%></td></tr>
-                                                    <tr><th style="text-align: center;vertical-align:middle; background-color: bisque;">Campus:</th></tr>
-                                                    <tr><td><%=boxes[0].Campus%></td></tr>
-                                                    <tr><th style="text-align: center;vertical-align:middle; background-color: bisque;">RID:</th></tr>
-                                                    <tr><td><%=boxes[0].RID%></td></tr>
-                                                </table>
-                                               
-                                            </td>
-                                            <%boxes.splice(0,1)%>
-                                            <%if(boxes.length >0){
-                                                var index = boxes.findIndex((element) => (new Date(element.boxdate)).toLocaleDateString() != printday.toLocaleDateString());
-                                                console.log("index ",index)
-                                                if(index != -1){
-                                                    while((new Date(boxes[0].boxdate)).toLocaleDateString() == printday.toLocaleDateString()){
-                                                        console.log("check box shift 2",(new Date(boxes[0].boxdate)).toLocaleDateString() , "   ",printday.toLocaleDateString());
-                                                        boxes.push(boxes.shift());
-                                                        }
-                                                    }
-                                                
-                                                }%>
-                                            
-                                            
-            
-                                        <%}else{%>
-                                            <%if(boxes.length >0){
-                                                var index = boxes.find((element) => (new Date(element.boxdate)).toLocaleDateString() != printday.toLocaleDateString());
-                                                if(index != -1){
-                                                    while((new Date(boxes[0].boxdate)).toLocaleDateString() == printday.toLocaleDateString()){
-                                                        console.log("check box shift 2",(new Date(boxes[0].boxdate)).toLocaleDateString() , "   ",printday.toLocaleDateString());
-                                                        boxes.push(boxes.shift());
-                                                        }
-                                                    }
-                                                }%>
-                                            <%}%> 
-                                    <%}else{%>
-                                        <%if(boxes.length >0){
-                                            var index = boxes.find((element) => (new Date(element.boxdate)).toLocaleDateString() != printday.toLocaleDateString());
-                                           if(index != -1){
-                                                while((new Date(boxes[0].boxdate)).toLocaleDateString() == printday.toLocaleDateString()){
-                                                    console.log("check box shift 3",(new Date(boxes[0].boxdate)).toLocaleDateString() , "   ",printday.toLocaleDateString());
-                                                    boxes.push(boxes.shift());
-                                                    }
-                                                }
-                                            
-                                            }%>
-                                            
-                                        <%}%>
-                                          
-
-
-
-
-
-
-
-
-                                                <%if(!printed){%> 
-                                                    <td><%=printday.toLocaleDateString("en-GB")%> <%=printday.toLocaleTimeString()%></td>
-                                                    <%}%>
-                               
-                                    <%if(printday.getDay() == 6){%>
-                                        <%printday = new Date(displaydate.getTime()+60*60*1000*a)%>                                        
-                                    <%}else{%>
-                                        <%printday = new Date(printday.getTime()+60*60*24*1000)%>
-                                    <%}%> 
-                           <%}else{%>
-                            <td>111</td>                     
-                            <%}%>                          
-                <%}%>                   
-                    <%}%><td></td>
-
-                </tr>
-                <%printday = new Date(printday.getTime()+60*60*1000)%>
-            <%}%>
+};
