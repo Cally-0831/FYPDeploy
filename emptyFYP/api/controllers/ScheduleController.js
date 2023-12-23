@@ -987,7 +987,7 @@ module.exports = {
             // console.log(supervisorlist[a].tid, "   ", thisschedulebox)
 
             var getallstudentlistforthissuper = "(select tid, supervisorpairstudent.sid, oid as colleague from supervisorpairstudent left join observerpairstudent on observerpairstudent.sid = supervisorpairstudent.sid where supervisorpairstudent.tid = \"" + supervisorlist[a].tid + "\"and supervisorpairstudent.sid not in (select sid from allschedulebox) )union (select oid,observerpairstudent.sid , tid as colleague from observerpairstudent left join supervisorpairstudent on observerpairstudent.sid = supervisorpairstudent.sid where observerpairstudent.oid = \"" + supervisorlist[a].tid + "\" and observerpairstudent.sid not in (select sid from allschedulebox))";
-           // console.log(getallstudentlistforthissuper)
+            // console.log(getallstudentlistforthissuper)
             var studentlistforthissupervisor = await new Promise((resolve) => {
                 pool.query(getallstudentlistforthissuper, (err, res) => {
                     var string = JSON.stringify(res);
@@ -1031,7 +1031,7 @@ module.exports = {
                     return a.availblelist - b.availblelist;
                 })
                 //console.log(counttimeboxlist)
-                
+
 
                 for (var b = 0; b < counttimeboxlist.length; b++) {
                     console.log(counttimeboxlist[b])
@@ -1088,11 +1088,11 @@ module.exports = {
                                 //console.log(">>checkscheduleboxlist", checkscheduleboxlist[0])
                                 if (checkscheduleboxlist[0] == undefined) {
                                     //console.log(supervisorlist[a].tid, "  ", checkavailabledup)
-                                    index ++;
+                                    index++;
 
-                                    
 
-                                    
+
+
                                     console.log("this fail", counttimeboxlist[b].sid)
 
                                     var manualhandleline = "insert into manualhandlecase values(\"" + counttimeboxlist[b].sid + "\",\"" + counttimeboxlist[b].tid + "\",\"" + counttimeboxlist[b].oid + "\")"
@@ -1121,8 +1121,8 @@ module.exports = {
                             }
 
                         }
-                        if (added) { 
-                            checker++; 
+                        if (added) {
+                            checker++;
                             var deletemanualhandleline = "delete from manualhandlecase where sid = \"" + counttimeboxlist[b].sid + "\";";
 
                             db.query(deletemanualhandleline, (err, res) => {
@@ -1131,7 +1131,7 @@ module.exports = {
                                 }
                             })
                             break;
-                         } else {
+                        } else {
                             console.log("need to handle this ppl manually", counttimeboxlist[b].sid);
                         }
                     }
@@ -1153,7 +1153,7 @@ module.exports = {
                         //console.log(delavailabletimequery)
                         db.query(delavailabletimequery, (err, result) => {
                             try {
-                             //   console.log("delavailabletimequery complete")
+                                //   console.log("delavailabletimequery complete")
                             } catch (err) {
                                 if (err) {
                                     errmsg = "error happened in ScheduleController.delavailabletimequery"
@@ -1248,17 +1248,17 @@ module.exports = {
                         }).catch((err) => {
                             errmsg = "error happened in ScheduleController.genavailble.insertscheduleboxquery"
                         })
-/** 
-                        var updatesupervisordraft = "update supervisor set draft = \"Y\" where tid = \"" + thisschedulebox[c].schedule[e].tid + "\""
-                        //console.log(updatesupervisordraft)
-                        insertbox = await new Promise((resolve) => {
-                            pool.query(updatesupervisordraft, (err, res) => {
-                                resolve(res)
-                            })
-                        }).catch((err) => {
-                            errmsg = "error happened in ScheduleController.genavailble.updatesupervisordraft"
-                        })
-*/
+                        /** 
+                                                var updatesupervisordraft = "update supervisor set draft = \"Y\" where tid = \"" + thisschedulebox[c].schedule[e].tid + "\""
+                                                //console.log(updatesupervisordraft)
+                                                insertbox = await new Promise((resolve) => {
+                                                    pool.query(updatesupervisordraft, (err, res) => {
+                                                        resolve(res)
+                                                    })
+                                                }).catch((err) => {
+                                                    errmsg = "error happened in ScheduleController.genavailble.updatesupervisordraft"
+                                                })
+                        */
                     }
 
                 }
@@ -1685,20 +1685,36 @@ module.exports = {
                 if (err) { resolve(JSON.parse(JSON.stringify({ "errmsg": "error happened in ScheduleController.retrievesinglesupervisorschedule.availableCombination" }))) }
                 var string = JSON.stringify(res);
                 var json = JSON.parse(string);
-                
-                    var ans = json;
+
+                var ans = json;
                 resolve(ans)
-                
-                
+
+
             })
         }).catch((err) => {
             errmsg = "error happened in ScheduleController.retrievesinglesupervisorschedule.availableCombination"
         })
         if (availableCombination.errmsg == undefined) {
-            return res.view("user/admin/HandleManualCase", { currentbox:CurrentBox,availableCombination: availableCombination })
+            return res.view("user/admin/HandleManualCase", { currentbox: CurrentBox, availableCombination: availableCombination })
         } else {
             return res.status(400).json(availableCombination.errmsg);
         }
 
+    },
+
+    RemoveRecords: async function (req, res) {
+        const importer = await sails.helpers.importer()
+        //console.log(importer)
+        // Recursive function to get files
+        const fs = require("fs");
+
+        const sqlfiles = '../SQL/Standard/RemoveRecords.sql'
+
+        await importer.import(sqlfiles);
+        var files_imported = importer.getImported();
+        console.log(`${files_imported.length} SQL file(s) imported.`);
+
+
+        return res.status(200).json("ok");
     }
 }

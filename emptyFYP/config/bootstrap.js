@@ -17,11 +17,11 @@
 // const Importer = require('mysql2-import');
 // const importer = new Importer({host, user, password, database});
 
-const host = 'localhost';
-const user = 'root';
-const password = 'Psycho.K0831';
-const database = 'fyptesting';
-const port = 3306
+// const host = 'localhost';
+// const user = 'root';
+// const password = 'Psycho.K0831';
+// const database = 'fyptesting';
+// const port = 3306
 
 
 
@@ -37,9 +37,10 @@ module.exports.bootstrap = async function () {
   // ```
   // // Set up fake development data (or if we already have some, avast)
 
-const Importer = require('mysql-import');
-const importer = new Importer({host, user, password,database});
-console.log(importer)
+//const Importer = require('mysql-import');
+//const importer = new Importer({host, user, password,database});
+const importer = await sails.helpers.importer()
+//console.log(importer)
   // Recursive function to get files
   const fs = require("fs");
 

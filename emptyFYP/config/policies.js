@@ -11,7 +11,7 @@
 const ScheduleController = require("../api/controllers/ScheduleController");
 
 module.exports.policies = {
-  //"*":"isLoggedin",
+  "*":"isLoggedin",
   
 
   UserController: {

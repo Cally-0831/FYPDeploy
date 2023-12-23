@@ -65,7 +65,4 @@ insert IGNORE into supervisorpairstudent values("tid00002","sid22222","where is 
 insert into alltakecourse values("COMP4096_00001","tid00001");
 insert into alltakecourse values("COMP4025_00001","tid00001");
 insert into alltakecourse values("COMP4025_10001","tid00001");
-
-
-
 insert into alltakecourse values("COMP4107_00001","tid00002");
