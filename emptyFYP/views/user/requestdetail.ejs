@@ -184,7 +184,9 @@
                                         <%if(thisrequestdetails.picdata !=null){%>
                                             <%var base64obj=Buffer.from(thisrequestdetails.picdata)%>
                                                 <img src="data:image/*;base64,<%=base64obj%>">
-                                                <%}%>
+                                                <%}else if(thisrequestdetails.picdata == null && thisrequestdetails.status == "Enforce Approved"){%>
+                                                    <img src="..\images\home\dotblack.png">
+                                                    <%}%>
                                     </div>
 
                                 </div>

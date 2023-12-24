@@ -15,7 +15,7 @@ module.exports = {
                     var string = JSON.stringify(results);
                     var json = JSON.parse(string);
                     noticelist = json;
-                    //         console.log('>> noticelist: ', noticelist);
+                    //console.log('>> noticelist: ', noticelist);
                     return res.view('user/notice', { thisusernoticetlist: noticelist });
                 } catch (err) {
                     console.log("sth happened here");

@@ -22,9 +22,6 @@ module.exports = {
                     console.log('>> request deadline: ', deadline);
                 }
                 return res.view('user/submitrequest', { theday: deadline });
-
-
-
             } catch (err) {
                 console.log("error happened in RequestController.getview");
 
@@ -349,7 +346,7 @@ console.log(req.body)
                     console.error(err);
                     return;
                 }
-                //    console.log(data);
+            console.log(data);
 
                 //console.log(req.file('avatar'));
 
