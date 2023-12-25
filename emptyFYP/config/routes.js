@@ -33,6 +33,13 @@ module.exports.routes = {
 
   //admin scheduling
   "POST /scheduledesign/removerecords":  "ScheduleController.RemoveRecords",
+  "POST /supervisorschedulelist/modifyschedule":  "ScheduleController.EditRecords",
+  "GET /supervisorschedulelist": "ScheduleController.supervisorschedulelist",
+  "GET /supervisorschedulelist/modifyschedule": "ScheduleController.retrievesinglesupervisorschedule",
+
+  //admin setting
+  "GET /setting": "SettingController.getsetting",
+  "POST /setting": "SettingController.submitsetting",
 
 
 
@@ -146,15 +153,12 @@ module.exports.routes = {
   'POST /read/:id': "StudentListController.addpairing",
   'DELETE /read/:id': "StudentListController.deletestudent",
 
-  "GET /setting": "SettingController.getsetting",
-  "POST /setting": "SettingController.submitsetting",
   "POST /scheduledesign/genavailable": "ScheduleController.genavailable",
 
   "GET /preference": "RequestController.getpreference",
   "POST /preference": "RequestController.submitpreference",
 
-  "GET /supervisorschedulelist": "ScheduleController.supervisorschedulelist",
-  "GET /supervisorschedulelist/modifyschedule": "ScheduleController.retrievesinglesupervisorschedule",
+  
   //"POST /setting/createnotice": "NoticeListController.viewnoticepage",
 
   "GET /viewFinalSchedule": "ScheduleController.viewFinalSchedule",
