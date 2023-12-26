@@ -7,7 +7,7 @@ var db = mysql.createConnection({
     port: 3306,
     password: "Psycho.K0831",
     //database: "fypdeploy"
-    database: "fyptesting"
+    database: "fyptesting",
 });
 db.connect(async (err) => {
     if (err) {
