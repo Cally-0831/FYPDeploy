@@ -6,6 +6,9 @@ module.exports = {
 
     login: async function (req, res) {
        //console.log(req)
+       if(req.session.userid != null){
+        return res.view('user/home')
+       }
         var db = await sails.helpers.database();
         var pool = await sails.helpers.database2();
         
