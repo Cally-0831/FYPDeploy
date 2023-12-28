@@ -178,7 +178,7 @@ font-size: calc(13px + 0.390625vw);;
   justify-content: center;
   line-height: calc(24px + 0.390625vw);
   max-width: 100%;
-  padding: 0 calc(25px + 0.390625vw);
+  padding: 0 3vw;
   position: relative;
   text-align: center;
   text-decoration: none;
