@@ -63,7 +63,7 @@ insert IGNORE into supervisorpairstudent values("tid00002","sid22222","where is 
 
 #requestdata
 #supevisor wholeday
-insert into allrequestfromsupervisor values("tid00001FsId5","tid00001","2024-01-19","00:00", "23:59");
+#insert into allrequestfromsupervisor values("tid00001FsId5","tid00001","2024-01-19","00:00", "23:59");
 #supevisorday
 insert into allrequestfromsupervisor values("tid00001nKCo9","tid00001","2024-01-20","08:30", "10:30");
 insert into allrequestfromsupervisor values("tid00002nKCo9","tid00002","2024-01-22","08:30", "12:30");
