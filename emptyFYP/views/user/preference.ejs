@@ -4,7 +4,7 @@
         <div class="columns">
             <div class="column">
                 <div class="buttons is-left">
-                    <div class="button buttonlogout " onclick="back()">
+                    <div class="button buttonlogout is-responsive " onclick="back()">
                         Back
                     </div>
                 </div>
@@ -108,7 +108,7 @@
             
             <%presentationstartdate = new Date(presentperiodstartdate).toLocaleDateString("en-GB")%>
             <%presentationenddate = new Date(presentperiodenddate).toLocaleDateString("en-GB")%>
-            <button class="button buttonlogout"  onclick="submitform('<%=command%>','<%=presentationstartdate%>','<%=presentationenddate%>','<%=studentnum%>')"><%=command%></button>
+            <button class="button buttonlogout is-responsive"  onclick="submitform('<%=command%>','<%=presentationstartdate%>','<%=presentationenddate%>','<%=studentnum%>')"><%=command%></button>
         </div>
             <%}else{%>
             <div style="padding: 10px;">

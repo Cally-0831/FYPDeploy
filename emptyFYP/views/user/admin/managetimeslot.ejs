@@ -1,10 +1,10 @@
 <div class="Pagetitle">All submitted timeslots of Classrooms</div>
 <div class="buttons">
-    <div class="button buttonlogout " onclick="backback()">
+    <div class="button buttonlogout is-responsive " onclick="backback()">
         Back
     </div>
 </div>
-<div class="table" style="width: 100%;overflow-x: auto; overflow-y: auto;">
+<div class="table" style="width: 100%;overflow-x: scroll; overflow-y: scroll;">
 <table id="mytable" class="table is-bordered is-striped is-hoverable is-fullwidth">
     <th style="font-size: calc(15px + 0.390625vw);text-align: center;vertical-align:middle;background-color: #C3B091;">
         <a class="sorting" id='headerReqID' onclick="sorting('sorting','mytable','headerReqID',0);">&#8593;</a>
@@ -77,7 +77,7 @@
                 <%= timeslotlist.Remarks%>
             </td>
             <td style="text-align: center;vertical-align:middle;font-size: calc(13px + 0.390625vw);">
-                <button class="button" type="button"
+                <button class="button is-responsive" type="button"
                     onclick="deleteclassroomtimeslot('<%= timeslotlist.ReqID %>')" style="background-color: salmon;">Delete</button>
             </td>
 
