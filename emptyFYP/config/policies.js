@@ -51,7 +51,8 @@ module.exports.policies = {
   },
 
   LessonListController:{
-   // '*': "isAdmin"
+    "*":"isLoggedin",
+   '*': "isAdmin"
   }
 
   
