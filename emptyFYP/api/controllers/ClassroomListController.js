@@ -29,6 +29,7 @@ module.exports = {
     },
 
     deleteclassroom: async function (req, res) {
+
         var db = await sails.helpers.database();
         var pool = await sails.helpers.database2();
 
@@ -54,7 +55,8 @@ module.exports = {
         var db = await sails.helpers.database();
         var pool = await sails.helpers.database2();
         var campuslist;
-
+        var db = await sails.helpers.database();
+        var pool = await sails.helpers.database2();
         let thisistheline = "SELECT DISTINCT campus FROM classroom";
         console.log(thisistheline)
         db.query(thisistheline, (err, results) => {
@@ -211,6 +213,7 @@ module.exports = {
     deletetimeslot: async function (req, res) {
         var db = await sails.helpers.database();
         var pool = await sails.helpers.database2();
+
 
         if (req.session.role = "adm") {
             let thisistheline = "DELETE FROM  allclassroomtimeslot WHERE reqid= \"" + req.body.ReqID + "\"\n";
