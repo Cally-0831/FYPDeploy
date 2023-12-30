@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-
+  
   <!--
   <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.8.55/css/materialdesignicons.min.css">
@@ -47,7 +47,8 @@
 
       <!--STYLES-->
       <link rel="stylesheet" href="/styles/importer.css">
-      <link rel="stylesheet" href="/styles/layout.css">
+      <link rel="stylesheet" href="/styles/layout.css" >
+      
       <!--STYLES END-->
 </head>
 <script defer src="https://use.fontawesome.com/releases/v5.10.0/js/all.js"></script>
@@ -60,21 +61,11 @@
 
 
 <body>
-
+ 
   <header>
-
     <div class="navbar">
-      <div class="navbar-start">
-        <div class="navbar-item">
-          <% if (req.session.username!=null) { %>
-            <a href="/home"><img src="\images\login\compbg.png"></a>
-            <% }else{ %>
-              <a href="/"><img src="\images\login\compbg.png"></a>
-              <% } %>
-        </div>
-      </div>
       <div class="navbar-end">
-        <% if (req.session.username!=null) { %>
+        <%if (req.session.userid!=null) { %>
 
           <script>
             function home() {

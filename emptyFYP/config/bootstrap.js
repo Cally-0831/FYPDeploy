@@ -22,9 +22,9 @@ module.exports.bootstrap = async function () {
   // // Set up fake development data (or if we already have some, avast)
 
 
-const importer = await sails.helpers.importer()
+const importer = await sails.helpers.importer();
 
-  const fs = require("fs");
+  //const fs = require("fs");
 
   const sqlfiles = [
     '../SQL/Standard/dropcommand.sql',
