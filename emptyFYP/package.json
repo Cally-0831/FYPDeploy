@@ -36,6 +36,7 @@
     "sails-hook-orm": "^4.0.0",
     "sails-hook-sockets": "^2.0.0",
     "sails-mysql": "^3.0.1",
+    "sails-mysql2": "^0.9.32",
     "sails.io.js": "^1.2.1",
     "sequelize": "^6.32.1",
     "socket.io-client": "^4.7.2",

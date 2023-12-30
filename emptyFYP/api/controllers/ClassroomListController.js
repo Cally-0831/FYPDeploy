@@ -221,8 +221,9 @@ module.exports = {
 
                     return res.ok("Deleted");
                 } catch (err) {
-                    if (err) { console.log("error happened when excuting ClassroomlistController.deletetimeslot");
-                }
+                    if (err) {
+                        console.log("error happened when excuting ClassroomlistController.deletetimeslot");
+                    }
                 }
 
             });
@@ -242,8 +243,9 @@ module.exports = {
                 return res.view('user/admin/classroommanagement', { allClassroomlist: roomlist });
 
             } catch (err) {
-                if (err) { cconsole.log("error happened when excuting ClassroomlistController.getinfobycampus");
-            }
+                if (err) {
+                    cconsole.log("error happened when excuting ClassroomlistController.getinfobycampus");
+                }
             }
 
         });
@@ -268,8 +270,9 @@ module.exports = {
                 //console.log(json);
                 return res.view('user/admin/view', { roominfo: roominfo, thetimeslotlist: timeslotlist });
             } catch (err) {
-                if (err) { console.log("error happened when excuting ClassroomlistController.getsingleroomtimeslot");
-            }
+                if (err) {
+                    console.log("error happened when excuting ClassroomlistController.getsingleroomtimeslot");
+                }
             }
 
         });
@@ -291,7 +294,7 @@ module.exports = {
                 return res.view('user/admin/updatetime', { thistimeslotinfo: thistimeslotinfo });
             } catch (err) {
                 console.log("error happened when excuting ClassroomlistController.getoneroom");
-            
+
             }
 
         });
@@ -369,5 +372,10 @@ module.exports = {
 
         });
     },
+    uploadclassroom: async function (req, res) {
+        var db = await sails.helpers.database();
+        var pool = await sails.helpers.database2();
+        console.log(req.body);
 
+    },
 }

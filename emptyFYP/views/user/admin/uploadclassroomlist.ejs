@@ -1,4 +1,4 @@
-<div class="Pagetitle">Upload List</div>
+<div class="Pagetitle">Upload Classroom List</div>
 <div class="rows">
     <div class="row">
         <div class="columns ">
@@ -14,23 +14,23 @@
 </div>
 <br><br>
 <script>
-    var allstudentarray = new Array(0);
+    var allclassroomarray = new Array(0);
 </script>
 <div class="columns is-centered">
     <div class="column is-two-fifths template">
         <form enctype="multipart/form-data">
-            <div class="Pagetitle">Supervisor List</div>
+            <div class="Pagetitle">Classroom List</div>
             <div style="font-size: 15px;color: grey;">Please Upload only excel files</div>
-            <div style="font-size: 15px;color: grey;">Sample file: <a href="images\Samplefile\SupervisorSample.xlsx"
-                    download><u>Supervisor Excel List</u></a></div>
+            <div style="font-size: 15px;color: grey;">Sample file: <a href="images\Samplefile\ClassroomSample.xlsx"
+                    download><u>Classroom Excel List</u></a></div>
             <br>
-            <input id="supervisorupload" type=file name="files[]">
+            <input id="classroomupload" type=file name="files[]">
 
         </form>
         <br>
-        <div id="getlistsupervisordata" style="font-size: 20px;"></div>
+        <div id="getlistclassroomdata" style="font-size: 20px;"></div>
         <div class="control">
-            <textarea class="textarea form-control" id="supervisorxlx_json"
+            <textarea class="textarea form-control" id="classroomxlx_json"
                 style="width:100% ;height:50% ; overflow: auto;" readonly></textarea>
         </div>
 
@@ -41,14 +41,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
 
 <script>
-    if (document.getElementById('supervisorupload') != null) {
-        document.getElementById('supervisorupload').addEventListener('change', handlesupervisorFileSelect, false);
-        var allsupervisorarray = new Array(0);
+    if (document.getElementById('classroomupload') != null) {
+        document.getElementById('classroomupload').addEventListener('change', handleclassroomFileSelect, false);
+        var allclassroomarray = new Array(0);
     }
 
-    var supervisorjsonobj;
+    var classroomjsonobj;
 
-    var ExcelToJSON = function (role) {
+    var ExcelToJSON = function () {
 
         this.parseExcel = function (file) {
             var reader = new FileReader();
@@ -63,22 +63,22 @@
                     var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
                     var json_object = JSON.stringify(XL_row_object);
 
-                    //jsonobj = json_object
-                    //  console.log("check jsonobj      " + jsonobj);
+                    jsonobj = json_object
+                     console.log("check jsonobj      " + jsonobj);
 
 
 
                     console.log("here")
                     console.log("check json_object      " + json_object);
-                    supervisorjsonobj = json_object;
-                    console.log("check jsonobj      " + supervisorjsonobj);
-                    allsupervisorarray = JSON.parse(json_object);
-                    document.getElementById("getlistsupervisordata").innerHTML = "Total " + allsupervisorarray.length + " supervisors will be created under your management,\<br\> Click confirm to create."
+                    classroomjsonobj = json_object;
+                    console.log("check jsonobj      " + classroomjsonobj);
+                    allclassroomarray = JSON.parse(json_object);
+                    document.getElementById("getlistclassroomdata").innerHTML = "Total " + allclassroomarray.length + " classrooms will be created under your management,\<br\> Click confirm to create."
                         + "\<br\>"
-                        + " \<form  action\=\"\/uploadsupervisorlist\" method\=\"post\" onsubmit\=\"submitform(this,\'sup\')\;return false\;\"\>"
+                        + " \<form  action\=\"\/uploadclassroomlist\" method\=\"post\" onsubmit\=\"submitform(this)\;return false\;\"\>"
                         + "\<button class=\"button buttonlogout is-responsive\" id\=\"confirm is\-success\"\>Confirm\<\/button\><br>"
                         + "\<\/form>";
-                    jQuery('#supervisorxlx_json').val(json_object);
+                    jQuery('#classroomxlx_json').val(json_object);
 
 
 
@@ -93,7 +93,7 @@
         };
     };
 
-    function handlesupervisorFileSelect(evt) {
+    function handleclassroomFileSelect(evt) {
 
         var files = evt.target.files; // FileList object
         console.log(files[0].name);
@@ -102,16 +102,16 @@
             alert("This is not a .xlsx file, please upload a correct format file");
             return;
         }
-        var xl2json = new ExcelToJSON("sup");
+        var xl2json = new ExcelToJSON();
         xl2json.parseExcel(files[0]);
     }
 
 
-    async function submitform(formElem, role) {
+    async function submitform(formElem) {
         var jsonobj;
         try {
 
-            jsonobj = supervisorjsonobj;
+            jsonobj = classroomjsonobj;
            
 
             var response = await fetch(formElem.action, {
@@ -121,8 +121,8 @@
             
             if (response.ok) {
 
-                alert("supervisors are created");
-                location.assign("/listuser");
+                alert("classrooms are created");
+                location.assign("/classroomlist");
 
             } else if (response.status == 401) {
                 var msg = await response.json();
