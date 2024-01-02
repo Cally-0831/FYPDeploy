@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  
+
   <!--
   <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.8.55/css/materialdesignicons.min.css">
@@ -60,52 +60,49 @@
 
 
 <body>
- 
+
   <header>
-    <div class="navbar">
-      <div class="navbar-start">
-        <div class="navbar-item">
-          <% if (req.session.username!=null) { %>
-            <a href="/home"><img src="\images\login\compbg.png"></a>
-            <% }else{ %>
-              <a href="/"><img src="\images\login\compbg.png"></a>
-              <% } %>
-        </div>
+    <nav class="navbar is-transparent">
+      <div class = "navbar-start">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          <img src="\images\login\compbg.png" style="max-height: 50px; max-width: 100px;">
+        </a>
+
       </div>
+    </div>
       <div class="navbar-end">
+        <a class="navbar-burger" id="burger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </a>
         <%if (req.session.userid!=null) { %>
-
-          <script>
-            function home() {
-              location.assign('/home')
-            }
-            function logout() {
-              location.assign('/user/logout')
-            }
-
-          </script>
-          <div class="navbar-item">
-            <div class="buttons">
-              <button class="button buttonlogout is-responsive" onclick="home()">
+          <div class="navbar-menu" id="nav-links" style="background-color: transparent; outline: none;box-shadow: none;">
+            <a class="navbar-item" href="/user/logout">
+              <button class="button buttonlogout is-responsive">
                 <%= req.session.username %>
               </button>
-              &ensp;
-              <button class="button buttonlogout is-responsive" onclick="logout()">
+
+            </a>
+            <a class="navbar-item" href="/user/logout">
+              <button class="button buttonlogout is-responsive" >
                 Logout
               </button>
-            </div>
-
-
+            </a>
           </div>
-
+          <%}%>
       </div>
+    </nav>
+    <script>
+      const burgerIcon = document.getElementById("burger");
+      const navbarMenu = document.getElementById("nav-links");
 
-      <% } %>
-
-    </div>
-
-
-
+      burgerIcon.addEventListener("click", () => {
+        navbarMenu.classList.toggle("is-active");
+        console.log(document.getElementById("nav-links").style)
+      })
+    </script>
   </header>
 
 </body>
