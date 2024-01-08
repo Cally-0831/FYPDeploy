@@ -24,9 +24,9 @@ create table allrequestfromsupervisor(ReqID	varchar(20) not null,TID		varchar(10
 
 create table allrequestfromstudent( ReqID	varchar(20) not null, SID		varchar(10) not null, RequestDate DATE not null, RequestStartTime time not null, RequestEndTime time not null, reason	varchar(1000) not null,picdata LONGBLOB,status varchar(20) not null,reply varchar(100),submission timestamp,primary key (ReqID) );
 
-create table supervisorpairstudent( TID		varchar(20) not null, SID		varchar(10) not null, Topic 	varchar(100) not null, primary key (TID,SID) );
+create table supervisorpairstudent( TID		varchar(20) not null, SID		varchar(10) not null unique, Topic 	varchar(100) not null, primary key (TID,SID) );
 
-create table observerpairstudent( OID		varchar(20) not null, SID		varchar(10) not null, obsname varchar(100) not null, primary key (SID) ); 
+create table observerpairstudent( OID		varchar(20) not null, SID		varchar(10) not null unique, obsname varchar(100) not null, primary key (OID,SID) ); 
 
 create table allclassroomtimeslot( ReqID	varchar(30) not null, Campus varchar(10) not null, RID		varchar(10) Not null, StartDate DATE not null, EndDate DATE not null, StartTime time not null, EndTime time not null, Remarks varchar(100), primary key (ReqID) );
 
@@ -34,7 +34,7 @@ create table allnotice( NID	varchar(20) not null, Creator		varchar(10) Not null,
 
 create table allsupersetting( STID	varchar(20) not null, Creator		varchar(10) Not null, CreateDate  timestamp , typeofsetting integer, deadlinedate date, deadlinetime time, startdate date, starttime time, enddate date, endtime time, LastUpdate timestamp, Announcetime timestamp default null, primary key (STID) );
 
-create table allpreffromsup(TID varchar(10) not null, Prefno varchar(50), LastUpdate timestamp not null, primary key (TID) );
+create table allpreffromsup(TID varchar(10) not null, daypref boolean default true, movementpref boolean default true, LastUpdate timestamp not null, primary key (TID) );
 
 create table allschedulebox( boxID varchar(30)not null, boxdate Timestamp not null, TYPE varchar(10) not null, TID varchar(10) not null, SID varchar(10)not null, OID varchar(50)not null, Campus varchar(10) not null, RID		varchar(10) Not null, LastUpdate timestamp not null, primary key (boxID) );
 
@@ -43,3 +43,4 @@ create table supervisoravailable( TID varchar(10) not null, availabledate DATE, 
 create table studentavailable( SID varchar(10) not null, availabledate DATE, availablestartTime timestamp, availableendTime timestamp, primary key(sid,availabledate,availablestarttime) );
 
 create table manualhandlecase( SID varchar(10) not null, TID varchar(10) not null, OID varchar(10) not null, primary key(sid) );
+
