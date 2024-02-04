@@ -1,4 +1,4 @@
-const { createPool } = require("mysql2")
+const { createPool } = require("mysql")
 
 const pool = createPool({
     //host: "fypdeploy2-mysql",
@@ -14,7 +14,7 @@ const pool = createPool({
     
  
     connectionLimit: 10,
-    idleTimeout: 100000, // idle connections timeout, in milliseconds, the default value 60000
+    idleTimeout: 10000, // idle connections timeout, in milliseconds, the default value 60000
     queueLimit: 0,
     enableKeepAlive: true,
 
