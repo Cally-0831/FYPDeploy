@@ -1,11 +1,19 @@
- <!-- while(parseInt(endtimeay[0]) - parseInt(starttimeay[0]) > 1) {
-                                    console.log("check a",parseInt(endtimeay[0]),"   ",parseInt(starttimeay[0]))
-                                    var element = JSON.parse(JSON.stringify(ttb[a]))
-                                    element.starttime = (parseInt(starttimeay[0]) + index) + ":" + "30:00"
-                                    element.endtime = (parseInt(starttimeay[0]) + index + 1) + ":" + "30:00"
-                                    appendlist.push(element);
-                                    endtimeay = element.starttime.split(":");
-                                    
-                                    index++;
-                                    console.log("check b",parseInt(endtimeay[0]),"   ",parseInt(starttimeay[0]))
-                                } -->
+<%case "FSC801D":%>
+                        <td style="background-color: orange;">
+                            <%=element.RID%>
+                        </td>
+                        <%;break;%>
+                        <%case "FSC901C":%>
+                        <td style="background-color: green;">
+                            <%=element.RID%>
+                        </td>
+                        <%;break;%>
+                        <%case "RRS638":%>
+                        <td style="background-color: yellow;">
+                            <%=element.RID%>
+                        </td>
+                        <%;break;%>
+                        <%default:%>
+                        <td>
+                            <%=element.RID%>
+                        </td>
