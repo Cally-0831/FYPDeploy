@@ -1,10 +1,10 @@
 const { start } = require("repl");
 const { setTimeout } = require("timers/promises");
 const { Blob } = require('buffer');
-const { Parser } =require('@json2csv/plainjs');
+const { Parser } = require('@json2csv/plainjs');
 
 module.exports = {
- 
+
     viewschedulepage: async function (req, res) {
 
     },
@@ -1593,7 +1593,7 @@ module.exports = {
             // console.log(">>scheduleforthisplan  ", scheduleforthisplan.length, " ", scheduleforthisplan);
             if (scheduleforthisplan.length == (await getStudentnum())) {
                 successschedule.push(a);
-                db.query("update allschedulebox set planStatus = true where planNo = " + a + " ", (err, results) => {
+                db.query("update allschedulebox set planStatus = \"Successful\" where planNo = " + a + " ", (err, results) => {
                     try {
                         // console.log("inserted ")
                     } catch (err) {
@@ -1740,7 +1740,7 @@ module.exports = {
         var pool = await sails.helpers.database2();
         // console.log("hello")
         var plannumber = await new Promise((resolve) => {
-            db.query("select distinct(planno) from allschedulebox group by planno having count(*) = (select count(*) as counting from student) order by planno asc", (err, res) => {
+            db.query("select distinct(planno) as planNo , planStatus from allschedulebox where planStatus != \"Unsuccessful\";", (err, res) => {
                 var string = JSON.stringify(res);
                 var json = JSON.parse(string);
                 var ans = json;
@@ -1754,10 +1754,10 @@ module.exports = {
         }).catch((err) => {
             errmsg = "error happened in ScheduleController.scheduleList"
         })
-         console.log(plannumber)
+        console.log(plannumber)
         var plandetails = await new Promise((resolve) => {
-            var queryline = "select Date(boxdate)as Date , Time(boxdate) as Time, allschedulebox.tid as SupID, supervisor.supname as SupName, allschedulebox.sid as StuID, student.stdname as StuName, allschedulebox.oid as ObsID, observerpairstudent.obsname as ObsName , rid as Classroom, Topic from allschedulebox left join supervisor on supervisor.tid = allschedulebox.TID left join observerpairstudent on allschedulebox.sid = observerpairstudent.sid left join student on allschedulebox.sid = student.SID left join supervisorpairstudent on allschedulebox.sid = supervisorpairstudent.sid where planNo = " + req.query.planNo + " order by boxdate asc, RID asc";
-            // console.log(queryline);
+            var queryline = "select allschedulebox.boxID, Date(boxdate)as Date , Time(boxdate) as Time,allschedulebox.type as Type, allschedulebox.tid as SupID, supervisor.supname as SupName, allschedulebox.sid as StuID, student.stdname as StuName, allschedulebox.oid as ObsID, observerpairstudent.obsname as ObsName , rid as Classroom, Topic from allschedulebox left join supervisor on supervisor.tid = allschedulebox.TID left join observerpairstudent on allschedulebox.sid = observerpairstudent.sid left join student on allschedulebox.sid = student.SID left join supervisorpairstudent on allschedulebox.sid = supervisorpairstudent.sid where planNo = " + req.query.planNo + " order by boxdate asc, RID asc";
+            console.log(queryline);
             db.query(queryline, (err, res) => {
                 var string = JSON.stringify(res);
                 var json = JSON.parse(string);
@@ -1983,7 +1983,7 @@ module.exports = {
     checksetting: async function (req, res) {
         var db = await sails.helpers.database();
         var pool = await sails.helpers.database2();
-        let checkdraftexist = "select * from allschedulebox where planStatus = true ";
+        let checkdraftexist = "select * from allschedulebox where planStatus != \"Unsuccessful\" ";
 
         db.query(checkdraftexist, (err, results) => {
             try {
@@ -1993,7 +1993,7 @@ module.exports = {
                 var havedraft = json;
                 console.log('>> havedraft: ', havedraft.length);
                 if (havedraft.length > 0) {
-                    db.query("select min(planNo) as pathNo from allschedulebox where planStatus = true ", (err, results) => {
+                    db.query("select min(planNo) as pathNo from allschedulebox where planStatus != \"Unsuccessful\" ", (err, results) => {
                         var string = JSON.stringify(results);
                         //console.log('>> string: ', string );
                         var json = JSON.parse(string);
@@ -2111,12 +2111,20 @@ module.exports = {
 
 
         }
-        var getavailabletimes = "select availabledate , availablestartTime from studentavailable where sid = \"" + CurrentBox.SID + "\" and availabledate in("
-            + " select availabledate from supervisoravailable where tid = \"" + CurrentBox.TID + "\" "
-            + "and availablestarttime in(select availablestarttime from supervisoravailable where tid = \"" + CurrentBox.OID + "\")) "
-            + "and availablestarttime in( select availablestartTime from supervisoravailable where tid = \"" + CurrentBox.TID + "\" "
-            + "and availablestarttime in(select availablestarttime from supervisoravailable where tid = \"" + CurrentBox.OID + "\"));";
-        //console.log(getavailabletimes);
+
+        var getavailabletimes = "select * from threeparty where sid = \"" + CurrentBox.SID + "\" "
+            + "and availabledate in (select distinct(Date(boxdate)) from allschedulebox where planNo = " + req.query.planNo + " ) "
+            + "and availablestarttime not in "
+            + "(select boxdate from allschedulebox where planNo = " + req.query.planNo + " "
+            + "and (tid = \"" + CurrentBox.TID + "\" or oid = \"" + CurrentBox.TID + "\" or tid = \"" + CurrentBox.OID + "\" or oid = \"" + CurrentBox.OID + "\"))"
+
+
+        // "select availabledate , availablestartTime from studentavailable where sid = \"" + CurrentBox.SID + "\" and availabledate in("
+        //     + " select availabledate from supervisoravailable where tid = \"" + CurrentBox.TID + "\" "
+        //     + "and availablestarttime in(select availablestarttime from supervisoravailable where tid = \"" + CurrentBox.OID + "\")) "
+        //     + "and availablestarttime in( select availablestartTime from supervisoravailable where tid = \"" + CurrentBox.TID + "\" "
+        //     + "and availablestarttime in(select availablestarttime from supervisoravailable where tid = \"" + CurrentBox.OID + "\"));";
+        console.log(getavailabletimes);
         availableCombination = await new Promise((resolve) => {
             pool.query(getavailabletimes, (err, res) => {
                 if (err) { resolve(JSON.parse(JSON.stringify({ "errmsg": "error happened in ScheduleController.HandleManualCase.availableCombination" }))) }
@@ -2159,10 +2167,15 @@ module.exports = {
         var pool = await sails.helpers.database2();
 
         if (req.query.Command == "getTime") {
-            var getavailabletimes = "select availablestartTime from studentavailable where sid = \"" + req.query.SID + "\" and availablestartTime in ("
-                + "select availablestartTime from supervisoravailable where tid = \"" + req.query.OID + "\" "
-                + "and availablestartTime in(select availablestartTime from supervisoravailable where tid = \"" + req.query.TID + "\" and availabledate = \"" + req.query.Date + "\"));"
-            console.log(getavailabletimes)
+            // var getavailabletimes = "select availablestartTime from studentavailable where sid = \"" + req.query.SID + "\" and availablestartTime in ("
+            //     + "select availablestartTime from supervisoravailable where tid = \"" + req.query.OID + "\" "
+            //     + "and availablestartTime in(select availablestartTime from supervisoravailable where tid = \"" + req.query.TID + "\" and availabledate = \"" + req.query.Date + "\"));"
+            var getavailabletimes = "select Time(availablestarttime) as availableTime from threeparty where sid = \"" + req.query.SID + "\" "
+                + "and availabledate =\"" + req.query.Date + "\" "
+                + "and availablestarttime not in "
+                + "(select boxdate from allschedulebox where planNo = " + req.query.planNo + " "
+                + "and (tid = \"" + req.query.TID + "\" or oid = \"" + req.query.TID + "\" or tid = \"" + req.query.OID + "\" or oid = \"" + req.query.OID + "\"))"
+            // console.log(getavailabletimes)
             availbletimes = await new Promise((resolve) => {
                 pool.query(getavailabletimes, (err, res) => {
                     if (err) { return res.status(401).json("error happened in HandelManualCase.GetTimeByDate") }
@@ -2170,17 +2183,13 @@ module.exports = {
                     var json = JSON.parse(string);
                     var ans = new Array();
                     json.forEach(element => {
-                        var starttime = (new Date(element.availablestartTime)).toLocaleTimeString("en-GB");
-                        ans.push(starttime);
+                        ans.push(element.availableTime);
                     });
-                    console.log(ans);
                     resolve(ans);
                 })
             }).catch((err) => {
                 errmsg = "error happened in ScheduleController.HandleManualCase.availableCombination"
             })
-
-
             return res.status(200).json(availbletimes);
         } else if (req.query.Command == "getCampus") {
             var getcampus = "select distinct(Campus) as Campus from classroom where Campus != \"\";"
@@ -2285,64 +2294,50 @@ module.exports = {
             }
             req.body.boxID = boxid;
             console.log(req.body);
-            var query = ["insert allschedulebox values (\"" + req.body.boxID + "\",\"" + req.body.date + " " + req.body.time + "\",\"" + req.body.TYPE + "\",\"" + req.body.TID + "\",\"" + req.body.SID + "\",\"" + req.body.OID + "\",\"" + req.body.Campus + "\",\"" + req.body.RID + "\",now());",
-            "Delete from supervisoravailable where tid = \"" + req.body.TID + "\" and availabledate = \"" + req.body.date + "\" and availablestarttime = \"" + req.body.date + " " + req.body.time + "\";",
-            "Delete from supervisoravailable where tid = \"" + req.body.OID + "\" and availabledate = \"" + req.body.date + "\" and availablestarttime = \"" + req.body.date + " " + req.body.time + "\";",
-            "Delete from studentavailable where sid = \"" + req.body.SID + "\" and availabledate = \"" + req.body.date + "\" and availablestarttime = \"" + req.body.date + " " + req.body.time + "\";",
-            "Delete from manualhandlecase where sid = \"" + req.body.SID + "\" ;",
-            ]
+            var insertquery = "insert allschedulebox values (\"" + req.body.boxID + "\","+req.body.planNo+","+"(select distinct(planStatus) as planStatus from allschedulebox where planNo = "+req.body.planNo+")"+",\"" + req.body.date + " " + req.body.time + "\",\"" + req.body.TYPE + "\",\"" + req.body.TID + "\",\"" + req.body.SID + "\",\"" + req.body.OID + "\",\"" + req.body.Campus + "\",\"" + req.body.RID + "\",now());";
 
-            query.forEach(element => {
-                db.query(element, (err, res) => {
-                    try { } catch (err) { return res.status(401).json("error happened in ScheduleController.EditScheduleBox.UpdateQuery") }
-                })
-            });
+            db.query(insertquery, (err, res) => {
+                try { console.log("inserted")} catch (err) { return res.status(401).json("error happened in ScheduleController.EditScheduleBox.UpdateQuery") }
+            })
 
-            return res.status(200).json("done");
+
+            // return res.status(200).json("done");
+            return res.redirect("/scheduledesign/scheduleList?planNo=" + req.body.planNo)
 
         } else {
             // check whether the current classroom can still be used for present
-            var getCurrentBox = "select * from allschedulebox where boxID = \"" + req.body.boxID + "\";";
-            console.log(getCurrentBox)
-            var CurrentBox = await new Promise((resolve) => {
-                pool.query(getCurrentBox, (err, res) => {
-                    if (err) { return res.status(401).json("error happened in ScheduleController.EditScheduleBox.getCurrentBox") }
-                    var string = JSON.stringify(res);
-                    var json = JSON.parse(string);
-                    if (json.length > 0) {
-                        resolve(json[0]);
-                    } else {
-                        resolve(null);
-                    }
-                })
-            }).catch((err) => {
-                errmsg = "error happened in ScheduleController.EditScheduleBox.getCurrentBox"
+            // var getCurrentBox = "select * from allschedulebox where boxID = \"" + req.body.boxID + "\";";
+            // console.log(getCurrentBox)
+            // var CurrentBox = await new Promise((resolve) => {
+            //     pool.query(getCurrentBox, (err, res) => {
+            //         if (err) { return res.status(401).json("error happened in ScheduleController.EditScheduleBox.getCurrentBox") }
+            //         var string = JSON.stringify(res);
+            //         var json = JSON.parse(string);
+            //         if (json.length > 0) {
+            //             resolve(json[0]);
+            //         } else {
+            //             resolve(null);
+            //         }
+            //     })
+            // }).catch((err) => {
+            //     errmsg = "error happened in ScheduleController.EditScheduleBox.getCurrentBox"
+            // })
+            // var oldboxdate = new Date(CurrentBox.boxdate);
+            // var oldboxdatestring = oldboxdate.toLocaleDateString("en-GB").split("/");
+            // var oldboxendtime;
+            // if (req.body.type == "final") {
+            //     oldboxendtime = new Date(oldboxdate.getTime() + 60 * 60 * 1000);
+            // } else {
+            //     oldboxendtime = new Date(oldboxdate.getTime() + 30 * 60 * 1000);
+            // }
+            var updatequery = "Update allschedulebox set boxdate = \"" + req.body.date + " " + req.body.time + "\" , Campus = \"" + req.body.Campus + "\", RID = \"" + req.body.RID + "\",LastUpdate = now() where boxID = \"" + req.body.boxID + "\";";
+
+            db.query(updatequery, (err, res) => {
+                try { console.log("updated") } catch (err) { return res.status(401).json("error happened in ScheduleController.EditScheduleBox.UpdateQuery") }
             })
-            var oldboxdate = new Date(CurrentBox.boxdate);
-            var oldboxdatestring = oldboxdate.toLocaleDateString("en-GB").split("/");
-            var oldboxendtime;
-            if (req.body.type == "final") {
-                oldboxendtime = new Date(oldboxdate.getTime() + 60 * 60 * 1000);
-            } else {
-                oldboxendtime = new Date(oldboxdate.getTime() + 30 * 60 * 1000);
-            }
-            var query = ["Update allschedulebox set boxdate = \"" + req.body.date + " " + req.body.time + "\" , Campus = \"" + req.body.Campus + "\", RID = \"" + req.body.RID + "\",LastUpdate = now() where boxID = \"" + req.body.boxID + "\";",
-            "insert into supervisoravailable values('" + req.body.TID + "','" + oldboxdatestring[2] + "-" + oldboxdatestring[1] + "-" + oldboxdatestring[0] + "','" + oldboxdatestring[2] + "-" + oldboxdatestring[1] + "-" + oldboxdatestring[0] + " " + oldboxdate.toLocaleTimeString("en-GB") + "','" + oldboxdatestring[2] + "-" + oldboxdatestring[1] + "-" + oldboxdatestring[0] + " " + oldboxendtime.toLocaleTimeString("en-GB") + "');",
-            "insert into supervisoravailable values('" + req.body.OID + "','" + oldboxdatestring[2] + "-" + oldboxdatestring[1] + "-" + oldboxdatestring[0] + "','" + oldboxdatestring[2] + "-" + oldboxdatestring[1] + "-" + oldboxdatestring[0] + " " + oldboxdate.toLocaleTimeString("en-GB") + "','" + oldboxdatestring[2] + "-" + oldboxdatestring[1] + "-" + oldboxdatestring[0] + " " + oldboxendtime.toLocaleTimeString("en-GB") + "');",
-            "insert into studentavailable values('" + req.body.SID + "','" + oldboxdatestring[2] + "-" + oldboxdatestring[1] + "-" + oldboxdatestring[0] + "','" + oldboxdatestring[2] + "-" + oldboxdatestring[1] + "-" + oldboxdatestring[0] + " " + oldboxdate.toLocaleTimeString("en-GB") + "','" + oldboxdatestring[2] + "-" + oldboxdatestring[1] + "-" + oldboxdatestring[0] + " " + oldboxendtime.toLocaleTimeString("en-GB") + "');",
-            "Delete from supervisoravailable where tid = \"" + req.body.TID + "\" and availabledate = \"" + req.body.date + "\" and availablestarttime = \"" + req.body.date + " " + req.body.time + "\";",
-            "Delete from supervisoravailable where tid = \"" + req.body.OID + "\" and availabledate = \"" + req.body.date + "\" and availablestarttime = \"" + req.body.date + " " + req.body.time + "\";",
-            "Delete from studentavailable where sid = \"" + req.body.SID + "\" and availabledate = \"" + req.body.date + "\" and availablestarttime = \"" + req.body.date + " " + req.body.time + "\";",
-            ]
-            query.forEach(element => {
-                db.query(element, (err, res) => {
-                    try { } catch (err) { return res.status(401).json("error happened in ScheduleController.EditScheduleBox.UpdateQuery") }
-                })
-            });
-
-            return res.status(200).json("done");
 
 
+            return res.redirect("/scheduledesign/scheduleList?planNo=" + req.body.planNo)
             // update the box
 
         }
@@ -2366,48 +2361,28 @@ module.exports = {
         return res.status(200).json("ok");
     },
 
-    EditRecords: async function (req, res) {
+    removeRecord : async function (req, res) {
         var db = await sails.helpers.database();
         var pool = await sails.helpers.database2();
 
         if (req.body.command = "delete") {
 
             var query = ["delete from allschedulebox where boxid = '" + req.body.boxid + "';",
-            "insert into supervisoravailable values('" + req.body.tid + "','" + req.body.date + "','" + req.body.date + " " + req.body.starttime + "','" + req.body.date + " " + req.body.endtime + "');",
-            "insert into supervisoravailable values('" + req.body.oid + "','" + req.body.date + "','" + req.body.date + " " + req.body.starttime + "','" + req.body.date + " " + req.body.endtime + "');",
-            "insert into studentavailable values('" + req.body.sid + "','" + req.body.date + "','" + req.body.date + " " + req.body.starttime + "','" + req.body.date + " " + req.body.endtime + "');",
-            "insert into manualhandlecase values('" + req.body.sid + "','" + req.body.tid + "','" + req.body.oid + "');"]
-
+        "update allschedulebox set planStatus = \"Manual Handling\" where planNo = "+req.body.planNo];
             query.forEach(element => {
                 db.query(element, (err, results) => {
                     try { } catch (err) {
-                        return res.status(401).json("Error happened when excuting ScheduleController.EditRecords.delete")
+                        return res.status(401).json("Error happened when excuting ScheduleController.removeRecord")
                     }
                 });
             });
-
-
-        } else {
-
+                
+    
         }
         return res.status(200).json("ok");
     },
 
     outputCSV: async function (req, res) {
-        // const csvmaker = function (wholefile) {
-        //     csvRows = [];
-        //     const headers = Object.keys(wholefile[0]);
-        //     csvRows.push(headers.join(','));
-        //     wholefile.forEach(element => {
-        //         const values = Object.values(element).join(',');
-        //         csvRows.push(values)
-        //         csvRows.join('\n');
-        //     });
-        //     console.log(csvRows);
-        //     return csvRows;
-        // }
-       
-
         var db = await sails.helpers.database();
         var getPlanBox = await new Promise((resolve) => {
             db.query("select Date(boxdate)as Date , Time(boxdate) as Time,allschedulebox.sid as StuID,supervisor.supname as SupName,  student.stdname as StuName, observerpairstudent.obsname as ObsName , rid as Classroom, Topic from allschedulebox left join supervisor on supervisor.tid = allschedulebox.TID left join observerpairstudent on allschedulebox.sid = observerpairstudent.sid left join student on allschedulebox.sid = student.SID left join supervisorpairstudent on allschedulebox.sid = supervisorpairstudent.sid where planNo = " + req.body.planNo + " order by boxdate asc, RID asc", (err, res) => {
@@ -2427,11 +2402,11 @@ module.exports = {
             element.Date = date.toLocaleDateString("en-GB");
         });
 
-       
+
         const opts = {};
-  const parser = new Parser(opts);
-  const csv = parser.parse(getPlanBox);
-  console.log(csv);
+        const parser = new Parser(opts);
+        const csv = parser.parse(getPlanBox);
+        console.log(csv);
         return res.json(csv);
     },
 }
