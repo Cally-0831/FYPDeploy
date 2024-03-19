@@ -49,10 +49,13 @@ module.exports.routes = {
   "POST /supervisorschedulelist/modifyschedule/:tid/:Page/HandleManualCase": "ScheduleController.EditScheduleBox",
 
   //admin click scheduling
-  'GET /scheduledesign': "SettingController.nodraft",
+  'GET /scheduledesign': "ScheduleController.nodraft",
+  'GET /scheduledesign/getdata': "ScheduleController.getData2",
   "POST /scheduledesign/genAvailable": "ScheduleController.genAvailable",
-  'GET /scheduledesign/nqueenversion': "ScheduleController.nqueenversion",
-  //'GET /scheduledesign/startschedule': "ScheduleController.startScheduling",
+  'POST /scheduledesign/nqueenversion': "ScheduleController.nqueenversion",
+  // 'GET /scheduledesign/Combinversion': "ScheduleController.nqueenversion",
+  'POST /scheduledesign/Combinversion': "ScheduleController.Combinversion",
+  'POST /scheduledesign/startschedule': "ScheduleController.startScheduling",
   'GET /scheduledesign/scheduleList': "ScheduleController.scheduleList",
   'GET /checkdraft': "ScheduleController.checksetting",
   "GET /checkschedule": "ScheduleController.viewfinalschedule",

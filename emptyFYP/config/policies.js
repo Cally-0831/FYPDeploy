@@ -47,6 +47,7 @@ module.exports.policies = {
     '*': "isAdmin"
   },
   ScheduleController:{
+    '*': "isAdmin"
     //viewfinalschdule :"isLUser"
   },
 
