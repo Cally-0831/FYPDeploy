@@ -305,9 +305,7 @@
                         pplTimeslot = pplTimeslot[i].value;
                     }
                 }
-                ClassroomTTB= "No"
-                        pplTTB= "Yes"
-                        pplTimeslot= "Yes",
+              
                         roomList= [
                             "FSC801C",
                             "FSC801D",
@@ -315,7 +313,7 @@
                             "FSC901D",
                             "FSC901E",
                             "RRS638",
-                            "RRS735"];
+                            "RRS732"];
                 roomList.sort();
                 // console.log(ClassroomTTB)
                 var r = confirm("Confirm to create with following deatils?\n"
@@ -348,7 +346,7 @@
                     var requestbody = JSON.stringify({
                         typeOfPresent: typeOfPresent,
                         ClassroomTTB: "No",
-                        pplTTB: "Yes",
+                        pplTTB: "No",
                         pplTimeslot: "Yes",
                         roomList: [
                             "FSC801C",
@@ -357,7 +355,7 @@
                             "FSC901D",
                             "FSC901E",
                             "RRS638",
-                            "RRS735"
+                            "RRS732",
                         ]
                     })
 
