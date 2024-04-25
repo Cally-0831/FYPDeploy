@@ -77,6 +77,8 @@
 
 <script>
     async function submitplainform(level) {
+
+        if(document.getElementById("content").value == "" || document.getElementById("title").value == ""){return alert("Please Input both title and contents for notice.")}
         
         const r = confirm("Confirm to create this notice?");
         var stringstring = document.getElementById("content").value;

@@ -35,7 +35,7 @@ CREATE TRIGGER addalluserstoroletable BEFORE INSERT ON allusers FOR EACH ROW BEG
 
 DELIMITER |
 CREATE TRIGGER insertcreatorname BEFORE INSERT ON allnotice FOR EACH ROW BEGIN
-  declare stringstring  varchar(10);
+  declare stringstring  varchar(800);
   declare timetime timestamp;
   declare idid varchar(15);
   declare deaddate date;
@@ -204,7 +204,7 @@ CREATE TRIGGER addtopicinsupervisor before insert ON supervisorpairstudent FOR E
     if countcountcount =0 THEN
         select count(*) into  countcount from supervisorpairstudent where Topic like new.Topic and tid = new.tid;
         if countcount = 0 THEN
-            insert into alltopics values(new.topic,new.tid);
+            insert ignore into alltopics values(new.topic,new.tid);
         END if;
     END if;
     if requestdeadlineannounced is not null THEN

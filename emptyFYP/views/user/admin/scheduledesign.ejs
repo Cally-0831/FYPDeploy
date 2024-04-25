@@ -284,7 +284,15 @@
             }
 
             async function confirmcreate(startdaydatetype, enddaydatetype) {
-
+                // roomList = [
+                //     "FSC801C",
+                //     "FSC801D",
+                //     "FSC901C",
+                //     "FSC901D",
+                //     "FSC901E",
+                //     "RRS638",
+                //     "RRS732"];
+                if (roomList.length == 0) { return alert("Please Select rooms for presentation venues arragnement.") }
                 var ClassroomTTB = document.getElementsByName("RoomTTBConsideration");
                 var pplTTB = document.getElementsByName("pplTTBConsideration");
                 var pplTimeslot = document.getElementsByName("pplTimeSlotConsideration");
@@ -305,15 +313,8 @@
                         pplTimeslot = pplTimeslot[i].value;
                     }
                 }
-              
-                        roomList= [
-                            "FSC801C",
-                            "FSC801D",
-                            "FSC901C",
-                            "FSC901D",
-                            "FSC901E",
-                            "RRS638",
-                            "RRS732"];
+
+
                 roomList.sort();
                 // console.log(ClassroomTTB)
                 var r = confirm("Confirm to create with following deatils?\n"
@@ -336,35 +337,35 @@
                             typeOfPresent = typeOfPresentlist[i].value;
                         }
                     }
+                    var requestbody = JSON.stringify({
+                        typeOfPresent: typeOfPresent,
+                        ClassroomTTB: ClassroomTTB,
+                        pplTTB: pplTTB,
+                        pplTimeslot: pplTimeslot,
+                        roomList: roomList
+                    })
                     // var requestbody = JSON.stringify({
                     //     typeOfPresent: typeOfPresent,
                     //     ClassroomTTB: ClassroomTTB,
                     //     pplTTB: pplTTB,
                     //     pplTimeslot: pplTimeslot,
-                    //     roomList: roomList
+                    //     roomList: [
+                    //         "FSC801C",
+                    //         "FSC801D",
+                    //         "FSC901C",
+                    //         "FSC901D",
+                    //         "FSC901E",
+                    //         "RRS638",
+                    //         "RRS732",
+                    //     ]
                     // })
-                    var requestbody = JSON.stringify({
-                        typeOfPresent: typeOfPresent,
-                        ClassroomTTB: "No",
-                        pplTTB: "No",
-                        pplTimeslot: "Yes",
-                        roomList: [
-                            "FSC801C",
-                            "FSC801D",
-                            "FSC901C",
-                            "FSC901D",
-                            "FSC901E",
-                            "RRS638",
-                            "RRS732",
-                        ]
-                    })
 
                     var response = await fetch("/scheduledesign/genAvailable", {
                         method: "POST",
                         body: requestbody
                     });
                     if (response.ok) {
-                       
+
                         // response = await fetch("/scheduledesign/nqueenversion", {
                         //     method: "POST",
                         //     body: requestbody
@@ -377,7 +378,7 @@
                             method: "POST",
                             body: requestbody
                         });
-                        alert("Please comback after 15 mintues, the plans will be appeared after generation")
+                        // alert("Please comback after 15 mintues, the plans will be appeared after generation")
                         if (response.ok) {
                             document.getElementById("loader").style.visibility = "hidden";
                             location.assign(response.url)

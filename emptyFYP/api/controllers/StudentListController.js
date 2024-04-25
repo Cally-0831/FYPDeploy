@@ -623,7 +623,7 @@ module.exports = {
     uploadsupervisorlist: async function (req, res) {
         var db = await sails.helpers.database();
         var pool = await sails.helpers.database2();
-        if (!req.body[0].hasOwnProperty("tid") || !req.body[0].hasOwnProperty("supervisorname" || !req.body[0].hasOwnProperty("password"))) {
+        if (!req.body[0].hasOwnProperty("tid") || !req.body[0].hasOwnProperty("supervisorname" || !req.body[0].hasOwnProperty("password") || !req.body[0].hasOwnProperty("priority"))) {
             return res.status(401).json("Invalid Inputs")
         } else {
             console.log(req.body);
@@ -733,7 +733,7 @@ module.exports = {
                 return Math.floor(Math.random() * max);
               }
               console.log(count == parseInt(supervisor.stdnum))
-            while(count != supervisor.stdnum){
+            while(count != supervisor.stdnum && notPairedStudentlist.length >0){
                 var index = getRandomInt(notPairedStudentlist.length);
                 console.log(index)
                 var pairingline = "insert ignore into observerpairstudent(obsname,oid,sid) values(\""+supervisor.supname+"\",\""+supervisor.tid+"\",\""+notPairedStudentlist[index].sid+"\");"

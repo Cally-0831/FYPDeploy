@@ -30,13 +30,16 @@ const importer = await sails.helpers.importer();
     '../SQL/Standard/dropcommand.sql',
     '../SQL/Standard/TableCreate.sql',
     '../SQL/Standard/TriggerCreate.sql',
+
+    // "../SQL/Standard/EssentialData.sql",
+    
     '../SQL/Standard/SampleData.sql',
     '../SQL/Standard/Setting.sql',
     '../SQL/Standard/AllclassSQL.sql',
-
-
-    '../SQL/Standard/SettingUpdateForFastTesting.sql',
     '../SQL/Standard/PairingObserver.sql',
+
+
+    // '../SQL/Standard/SettingUpdateForFastTesting.sql',
   ]
   importer.onProgress(progress=>{
     var percent = Math.floor(progress.bytes_processed / progress.total_bytes * 10000) / 100;
