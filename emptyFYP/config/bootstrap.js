@@ -31,12 +31,12 @@ const importer = await sails.helpers.importer();
     '../SQL/Standard/TableCreate.sql',
     '../SQL/Standard/TriggerCreate.sql',
 
-    // "../SQL/Standard/EssentialData.sql",
+    "../SQL/Standard/EssentialData.sql",
     
-    '../SQL/Standard/SampleData.sql',
+    // '../SQL/Standard/SampleData.sql',
     '../SQL/Standard/Setting.sql',
-    '../SQL/Standard/AllclassSQL.sql',
-    '../SQL/Standard/PairingObserver.sql',
+    // '../SQL/Standard/AllclassSQL.sql',
+    // '../SQL/Standard/PairingObserver.sql',
 
 
     // '../SQL/Standard/SettingUpdateForFastTesting.sql',
